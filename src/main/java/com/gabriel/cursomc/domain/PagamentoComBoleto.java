@@ -30,7 +30,7 @@ public class PagamentoComBoleto extends Pagamento{
 		super(id, estado, pedido);
 		this.dataVencimento = dataVencimento;
 		this.dataPagamento = dataPagamento;
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public Date getDataVencimento() {

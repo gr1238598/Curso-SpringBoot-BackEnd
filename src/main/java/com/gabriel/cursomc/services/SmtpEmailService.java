@@ -13,33 +13,32 @@ import jakarta.mail.internet.MimeMessage;
 
 @Service
 @Profile("dev")
-public class SmtpEmailService extends AbstractEmailService{
-	
+public class SmtpEmailService extends AbstractEmailService {
+
 	@Autowired
 	private MailSender mailSender;
-	
+
 	@Autowired
 	private JavaMailSender javaMailSender;
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(SmtpEmailService.class);
 
 	@Override
 	public void sendEmail(SimpleMailMessage msg) {
-		
+
 		LOG.info("Serviço de email...");
 		mailSender.send(msg);
 		LOG.info("email enviado");
-		
-		
+
 	}
 
 	@Override
 	public void sendHtmlEmail(MimeMessage msg) {
-		
+
 		LOG.info("Serviço de email...");
 		javaMailSender.send(msg);
 		LOG.info("email enviado");
-		
+
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.gabriel.cursomc.config;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -35,10 +36,7 @@ public class SecurityConfig {
 	@Autowired
 	private UserDetailsService userDetailsService; 
 	
-	
 	private static final String[] PUBLIC_MATCHERS = { "/h2-console/**", "/produtos/**", "/categorias/**", "/clientes","/clientes/picture","/auth/forgot**","/estados/**"};
-	
-	/*private static final String[] PUBLIC_MATCHERS_POST = { "/clientes/**"};*/
 	
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
@@ -48,7 +46,7 @@ public class SecurityConfig {
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(auth -> auth.requestMatchers(PUBLIC_MATCHERS).permitAll().anyRequest().authenticated());
 				
-		       // .authorizeHttpRequests(auth -> auth.requestMatchers(PUBLIC_MATCHERS_POST).permitAll().anyRequest().authenticated());
+		       
 				http.addFilter(new JWTAuthenticationFilter(authenticationManager, jwtUtil));
 				http.addFilter(new JWTAuthorizationFilter(authenticationManager, jwtUtil,userDetailsService));
 		http.headers(headers->headers.frameOptions(framesOptions -> framesOptions.sameOrigin()));
@@ -70,7 +68,9 @@ public class SecurityConfig {
 	CorsConfigurationSource corsConfigurationSource() {
 		
 		CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
+		configuration.setAllowedOrigins(List.of("http://localhost:8100"));
 		configuration.setAllowedMethods(Arrays.asList("POST", "GET", "DELETE", "OPTIONS"));
+	   
 		final UrlBasedCorsConfigurationSource source = new  UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration);
 		
